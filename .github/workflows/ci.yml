@@ -1,0 +1,57 @@
+name: CI Pipeline — Build, Test & Validate
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: CI — Typecheck, Test & Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: Task_7/package-lock.json
+
+      # 3. Install dependencies (clean install for CI)
+      - name: Install Dependencies
+        working-directory: Task_7
+        run: npm ci
+
+      # 4. TypeScript strict typecheck
+      - name: TypeScript Strict Typecheck
+        working-directory: Task_7
+        run: npm run typecheck
+
+      # 5. Run Jest + Supertest Integration Tests
+      - name: Run Jest + Supertest Tests
+        working-directory: Task_7
+        run: npm test
+
+      # 6. Build TypeScript to JavaScript (production bundle)
+      - name: Build TypeScript
+        working-directory: Task_7
+        run: npm run build
+
+      # 7. Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: Task_7/dist/
+          retention-days: 7
