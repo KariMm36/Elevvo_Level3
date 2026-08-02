@@ -1,0 +1,22 @@
+{
+  "name": "redis-cache-aside-performance",
+  "version": "1.0.0",
+  "description": "High-Performance Caching & Active Cache Invalidation with Redis",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "ts-node src/app.ts",
+    "test": "ts-node test_task6.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ioredis": "^5.3.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "ioredis-mock": "^8.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
